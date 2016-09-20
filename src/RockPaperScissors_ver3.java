@@ -79,23 +79,25 @@ public class RockPaperScissors_ver3{
 		deleteContents.close();
 		FileWriter appendDetermine = new FileWriter("outputfile.txt", true);
 		PrintWriter fileAppend = new PrintWriter(appendDetermine);
+		Scanner intInput = new Scanner(System.in);
+		Scanner charInput = new Scanner(System.in);
 		
 		//While loop for Game Continuation
 		while(i<10 && continueChoice == 'y') {
 			//This outputs the greeting of the program
 			if(winner != "Draw" ) {
-				Greetings(i);
+				Greetings(i, fileAppend);
 			}
 			//The computer selects a random number for the rock, paper, scissors game
 			computerChoice = ComputerSelection(numGenerator);
 			//The user selects the choice of either rock, paper, scissors
-			userChoice = UserSelection();
+			userChoice = UserSelection(fileAppend, intInput);
 			//This shows the computer's choice
-			ComputerDecision(computerChoice);
+			ComputerDecisionOutput(computerChoice, fileAppend);
 			//This decides which one is the winner
-			winner = DecideWinner(userChoice, computerChoice);
+			winner = DecideWinner(userChoice, computerChoice, fileAppend);
 			//This one declares the winner
-			AnnounceWinner(winner);
+			AnnounceWinner(winner, fileAppend);
 		
 			//Increments i each time the program User decides to play a new game
 			if(winner!="Draw") {
@@ -103,22 +105,23 @@ public class RockPaperScissors_ver3{
 			}
 			
 			//This determines if the user wants to continue
-			continueChoice = ContinueOption(winner);
+			continueChoice = ContinueOption(winner, fileAppend, charInput, i);
 			
 		}//Closes While loop (continueChoice)
 		System.out.println("Thanks for playing. Bye!");
 		fileAppend.println("Thanks for playing. Bye!");
+		
+		fileAppend.close();
+		intInput.close();
+		charInput.close();
 	}//Closes Main
 	
 	//*****************************
 	//     Function Definitions	  *
 	//*****************************
 	
-	public static int UserSelection() throws IOException{
+	public static int UserSelection(PrintWriter fileOutput, Scanner input) throws IOException{
 		int select; //Storing the input from user for userSelection
-		Scanner input = new Scanner(System.in);
-		FileWriter appendFile = new FileWriter("outputfile.txt",true);
-		PrintWriter fileOutput = new PrintWriter(appendFile);
 		
 		System.out.println("Please select one of the following:");
 		fileOutput.println("Please select one of the following:");
@@ -144,15 +147,10 @@ public class RockPaperScissors_ver3{
 		return randInt;
 	}
 	
-	public static String DecideWinner(int userChoice, int computerChoice) throws IOException{
+	public static String DecideWinner(int userChoice, int computerChoice, PrintWriter fileOutput) throws IOException{
 		String w = null;
 		//Switch statement based on what User entered
 		//Will do the error checking and let user know who wins (user or computer)
-		
-		FileWriter appendFile = new FileWriter("outputfile.txt",true);
-		PrintWriter fileOutput = new PrintWriter(appendFile);
-		
-		
 		
 		switch(userChoice){
 		case 1:
@@ -199,10 +197,7 @@ public class RockPaperScissors_ver3{
 		return w;
 	}
 	
-	public static void AnnounceWinner(String winner) throws IOException{
-		
-		FileWriter appendFile = new FileWriter("outputfile.txt",true);
-		PrintWriter fileOutput = new PrintWriter(appendFile);
+	public static void AnnounceWinner(String winner, PrintWriter fileOutput) throws IOException{
 		
 		if(winner != "Draw") {
 		
@@ -216,48 +211,55 @@ public class RockPaperScissors_ver3{
 		}
 	}
 	
-	public static char ContinueOption(String winner) throws IOException{
+	public static char ContinueOption(String winner, PrintWriter fileOutput, Scanner charIn, int i) throws IOException{
 		char d = 'y';
-		
-		if(winner !="Draw") {
-			Scanner charIn = new Scanner(System.in);
+		if(winner !="Draw" && i<9) {
 			
 			System.out.println("Would you like to play again? y/Y = yes, n/N = no");
-			fileOutput.println("Would you like to play again? y/Y = yes, n/N = no");
+			fileOutput.println("Would you like to play again? y/Y = yes, n/N = no\r\n");
 			
 			d = charIn.nextLine().charAt(0);
+			fileOutput.println(d +"\r\n");
 			while(d!='y' && d!='Y'&& d!='n'&& d!='N') {
 			
 				System.out.println("This is an invalid answer. Please type in y/Y or n/N (yes or no).");
+				fileOutput.println("This is an invalid answer. Please type in y/Y or n/N (yes or no).\r\n");
 				d = charIn.nextLine().charAt(0);
+				fileOutput.println(d + "\r\n");
 			}
 		}
 		return d;
 	}
 	
-	public static void Greetings(int i) throws IOException {
+	public static void Greetings(int i, PrintWriter fileOutput) throws IOException {
+		
 		if(i==0) {
 			System.out.println("Welcome to the 2016 Rock Paper Scissors Olympics of the world!");
+			fileOutput.println("Welcome to the 2016 Rock Paper Scissors Olympics of the world!");
 		}
 		else if(i>0 && i<9) {
 			System.out.println("Welcome back to the 2016 Rock Paper Scissors Olympics of the world!");
+			fileOutput.println("Welcome back to the 2016 Rock Paper Scissors Olympics of the world!");
 		}
 		else {
 			System.out.println("Welcome to the final round of the 2016 Rock Paper Scissors Olympics of the world!");
+			fileOutput.println("Welcome to the final round of the 2016 Rock Paper Scissors Olympics of the world!");
 		}
 	}
 	
-	public static void ComputerDecision(int CompDecis) throws IOException {
+	public static void ComputerDecisionOutput(int CompDecis, PrintWriter fileOutput) throws IOException {
 		switch(CompDecis){
 		case 1:
 			System.out.println("The computer has chosen: Rock!");
+			fileOutput.println("The computer has chosen: Rock!");
 			break;
 		case 2:
 			System.out.println("The Computer has chosen: Paper!");
+			fileOutput.println("The Computer has chosen: Paper!");
 			break;
 		case 3:
 			System.out.println("The Computer has chosen: Scissors!");
-			
+			fileOutput.println("The Computer has chosen: Scissors!");
 			break;
 		}
 
