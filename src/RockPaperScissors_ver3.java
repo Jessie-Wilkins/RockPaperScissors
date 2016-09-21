@@ -67,8 +67,8 @@ public class RockPaperScissors_ver3{
 		char continueChoice = 'y';						//User input for continuation of game
 		int computerChoice = 0;							//Computer Randomized Choice (R, P, S)
 		int userChoice = 0;								//User picked Choice (R, P, S)
-		String winner = new String("Nothing");									//Output String for who wins
-		Random numGenerator = new Random();						//Initialization for Random Generator
+		String winner = new String("Nothing");			//Output String for who wins
+		Random numGenerator = new Random();				//Initialization for Random Generator
 		
 		//**********************
 		//	START OF PROGRAM   *
@@ -135,9 +135,9 @@ public class RockPaperScissors_ver3{
 			System.out.println("\r\nThe value entered is not Valid! Please try again.");
 			select = input.nextInt();
 			fileOutput.println("\r\n" +select);
-		}
+		}//Closes 'while' loop
 		return select;
-	}
+	}//Closes UserSelection Method
 	
 	public static int ComputerSelection(Random rand) throws IOException{
 		int randInt;
@@ -145,7 +145,7 @@ public class RockPaperScissors_ver3{
 		randInt = rand.nextInt(3)+1;
 		
 		return randInt;
-	}
+	}//Closes ComputerSelection Method
 	
 	public static String DecideWinner(int userChoice, int computerChoice, PrintWriter fileOutput) throws IOException{
 		String w = null;
@@ -193,9 +193,9 @@ public class RockPaperScissors_ver3{
 				w = "Draw";
 			}//closes 2nd else if
 			break;
-		}
+		}//Closes 'userChoice' Switch Statement
 		return w;
-	}
+	}//Closes DecisionWinner Method
 	
 	public static void AnnounceWinner(String winner, PrintWriter fileOutput) throws IOException{
 		
@@ -209,7 +209,7 @@ public class RockPaperScissors_ver3{
 			System.out.println("Its a draw. We need to play again.");
 			fileOutput.println("Its a draw. We need to play again.");
 		}
-	}
+	}//Closes AnnounceWinner Method
 	
 	public static char ContinueOption(String winner, PrintWriter fileOutput, Scanner charIn, int i) throws IOException{
 		char d = 'y';
@@ -226,10 +226,10 @@ public class RockPaperScissors_ver3{
 				fileOutput.println("This is an invalid answer. Please type in y/Y or n/N (yes or no).\r\n");
 				d = charIn.nextLine().charAt(0);
 				fileOutput.println(d + "\r\n");
-			}
-		}
+			}//Closes 'while' loop in ContinueOption Method
+		}//Closes 'if' statement in ContinueOption Method
 		return d;
-	}
+	}//Closes ContinueOption Method
 	
 	public static void Greetings(int i, PrintWriter fileOutput) throws IOException {
 		
@@ -245,7 +245,7 @@ public class RockPaperScissors_ver3{
 			System.out.println("Welcome to the final round of the 2016 Rock Paper Scissors Olympics of the world!");
 			fileOutput.println("Welcome to the final round of the 2016 Rock Paper Scissors Olympics of the world!");
 		}
-	}
+	}//Closes Greetings Class
 	
 	public static void ComputerDecisionOutput(int CompDecis, PrintWriter fileOutput) throws IOException {
 		switch(CompDecis){
@@ -261,8 +261,8 @@ public class RockPaperScissors_ver3{
 			System.out.println("The Computer has chosen: Scissors!");
 			fileOutput.println("The Computer has chosen: Scissors!");
 			break;
-		}
+		}//Closes ComputerDecis Switch Statement
 
-	}
+	}//Closes ComputerDecisionOutput Class
 
 }//Closes RockPaperScissors Class
