@@ -21,7 +21,7 @@ SUMMARY
 	the same choice, the game is played again. After determining the winner, the winner 
 	is output to the console. The computer will also ask if the user would like to 
 	play again; if the user indicates that he or she does not want to play again, 
-	the program will quit. Otherwise, it will play again. As long asthe user wants 
+	the program will quit. Otherwise, it will play again. As long as the user wants 
 	to play again, the program will repeat the game up to ten times; 
 	After ten times, it will quit. All input and output is also printed onto a file.
 	
@@ -36,41 +36,44 @@ The input of the program will be integers that correspond
 to the choices in the way shown above. After determining the
 winners, the computer will ask the user if he or she would
 like to play again in the form of a character.
-The functions' argument have the parameter of the Random
-object (ComputerSelction), two integers one being the user choice
-and the other being the computer choice (DecideWinner), and a string
-(AnnounceWinner).
+The functions' argument have the parameter of the counter integer for how 
+many games there have been and the output file object (Greetings); the Random
+object (ComputerChoice); the integer choice of the computer and the output file object
+(ComputerDecisionOutput); two integers one being the user choice
+and the other being the computer choice and the output file object (DecideWinner); a string 
+and an output file object (AnnounceWinner); the winner string, the output file object, the input object
+for a character, and the counter (ContinueChoice).
 
 OUTPUT
-
+The program will wipe the output file clean for the start of the program
+by outputting to the file.
 The program will output commands to enter a number and will eventually
 announce the winner by printing a string. The computer will also ask
-if the user would
-Program will output the 3 winning fruits (along with the selected fruit)
-The 3 winning fruits will be drawn at random.
-And also the accompanied winnings or loss of cash.
+if the user would want to start the program again. All input and output of the
+program is appended to the file.
+
 
 ASSUMPTIONS
 - None
 
 */
 
-import java.io.*;										//Import for input/output data streams/file system
-import java.util.Scanner;								//Import Scanner Object	
-import java.util.Random;								//Import Random Generator	
+import java.io.*;									//Import for input/output data streams/file system
+import java.util.Scanner;							//Import Scanner Object	
+import java.util.Random;							//Import Random Generator	
 
-public class RockPaperScissors_ver5{
+public class RockPaperScissors{
 	public static void main(String[] args) throws IOException{
 		
 		//Variables and constants
-		int i=0;										//This declares and initilizes the variable used to count the number of timest
-														//the program is run
-		char continueChoice = 'y';						//User input for continuation of game
-		int computerChoice = 0;							//Computer Randomized Choice (R, P, S)
-		int userChoice = 0;								//User picked Choice (R, P, S)
-		String winner = new String("Nothing");			//Output String for who wins
-		Random numGenerator = new Random();				//Initialization for Random Generator
-		int MAX_NUMBER_OF_ROUNDS = 10;					//This declares and initializes the constant that is the maximum number of rounds
+		int i=0;									//This declares and initializes the variable used to count the number of times
+													//the program is run
+		char continueChoice = 'y';					//User input for continuation of game
+		int computerChoice = 0;						//Computer Randomized Choice (R, P, S)
+		int userChoice = 0;							//User picked Choice (R, P, S)
+		String winner = new String("Nothing");		//Output String for who wins
+		Random numGenerator = new Random();			//Initialization for Random Generator
+		int MAX_NUMBER_OF_ROUNDS = 10;				//This declares and initializes the constant that is the maximum number of rounds
 		
 		//**********************
 		//	START OF PROGRAM   *
@@ -118,15 +121,22 @@ public class RockPaperScissors_ver5{
 		System.out.println("Thanks for playing. Bye!");
 		fileAppend.println("Thanks for playing. Bye!");
 		//This closes three objects
-		fileAppend.close();									//This closes the file object
-		intInput.close();									//This closes the input object for the integer
-		charInput.close();									//This closes the input object for the character
+		fileAppend.close();								//This closes the file object
+		intInput.close();								//This closes the input object for the integer
+		charInput.close();								//This closes the input object for the character
 	}//Closes Main
 	
 	//*****************************
 	//     Function Definitions	  *
 	//*****************************
-	
+	/**
+	 * This accepts the integer user input of the numerical-based choice of 
+	 * rock paper scissors and error checks the value.
+	 * @param fileOutput
+	 * @param input
+	 * @return select
+	 * @throws IOException
+	 */
 	public static int UserSelection(PrintWriter fileOutput, Scanner input) throws IOException{
 		//Storing the input from user for userSelection
 		int select; 
@@ -151,6 +161,13 @@ public class RockPaperScissors_ver5{
 		return select;
 	}//Closes UserSelection Method
 	
+	/**
+	 * The computer selects a value based on the random number produced by the 
+	 * random number generator
+	 * @param rand
+	 * @return randInt
+	 * @throws IOException
+	 */
 	public static int ComputerSelection(Random rand) throws IOException{
 		//This declares the variable that will be used for the random integer
 		int randInt;
@@ -160,6 +177,15 @@ public class RockPaperScissors_ver5{
 		return randInt;
 	}//Closes ComputerSelection Method
 	
+	/**
+	 * This decides the winner by comparing the number-based 
+	 * (r,p,s) choices of the user and the computer
+	 * @param userChoice
+	 * @param computerChoice
+	 * @param fileOutput
+	 * @return w
+	 * @throws IOException
+	 */
 	public static String DecideWinner(int userChoice, int computerChoice, PrintWriter fileOutput) throws IOException{
 		//This declares and initializes the string variable/object
 		String w = null;
@@ -211,7 +237,7 @@ public class RockPaperScissors_ver5{
 			fileOutput.println("You have chosen: Scissors!");
 			//This assigns "Computer" to the string variable if the computer choice is 1
 			if(computerChoice == 1){
-				w = "Computer";
+				w = "Computer!";
 				return w;
 			}//closes if
 			//This assigns "You!" to the string variable if the computer choice is 2
@@ -229,6 +255,12 @@ public class RockPaperScissors_ver5{
 		return w;
 	}//Closes DecisionWinner Method
 	
+	/**
+	 * This announces who the user is by using the string returned from DecideWinner
+	 * @param winner
+	 * @param fileOutput
+	 * @throws IOException
+	 */
 	public static void AnnounceWinner(String winner, PrintWriter fileOutput) throws IOException{
 		//This prints out the winner to the console and the file if it is not a draw
 		if(winner != "Draw") {
@@ -244,6 +276,7 @@ public class RockPaperScissors_ver5{
 		}
 	}//Closes AnnounceWinner Method
 	
+	//This decides to continue the program based on the user's decision and on who is the winner
 	public static char ContinueOption(String winner, PrintWriter fileOutput, Scanner charIn, int i) throws IOException{
 		//This declares and initializes the character variable
 		char d = 'y';
@@ -271,6 +304,12 @@ public class RockPaperScissors_ver5{
 		return d;
 	}//Closes ContinueOption Method
 	
+	/**
+	 * This gives the greeting depending on how many times the game is played
+	 * @param i
+	 * @param fileOutput
+	 * @throws IOException
+	 */
 	public static void Greetings(int i, PrintWriter fileOutput) throws IOException {
 		//This prints out the beginning greeting to the console and the file
 		//if it is the first time the program is running
@@ -290,8 +329,14 @@ public class RockPaperScissors_ver5{
 			System.out.println("Welcome to the final round of the 2016 Rock Paper Scissors Olympics of the world!");
 			fileOutput.println("Welcome to the final round of the 2016 Rock Paper Scissors Olympics of the world!");
 		}
-	}//Closes Greetings Class
+	}//Closes Greetings Method
 	
+	/**
+	 * This prints out which item the computer has chosen based on the numerical choice 
+	 * @param CompDecis
+	 * @param fileOutput
+	 * @throws IOException
+	 */
 	public static void ComputerDecisionOutput(int CompDecis, PrintWriter fileOutput) throws IOException {
 		//This is the switch statement that determines which item the computer chose
 		switch(CompDecis){
@@ -315,6 +360,6 @@ public class RockPaperScissors_ver5{
 			break;
 		}//Closes ComputerDecis Switch Statement
 
-	}//Closes ComputerDecisionOutput Class
+	}//Closes ComputerDecisionOutput Method
 
 }//Closes RockPaperScissors Class
